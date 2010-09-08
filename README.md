@@ -18,14 +18,14 @@ Basic wrapper for avro functionality.  Currently, only supports flat/linear sche
             {:name "bob"
              :num_likes 1
              :num_photos 2
-             :num_groups 3}
+             :num_groups 3})
 
     (thaw *some-schema*
-                    (freeze *some-schema*
-                            {:name "bob"
-                             :num_likes 1
-                             :num_photos 2
-                             :num_groups 3}))
+        (freeze *some-schema*
+                {:name "bob"
+                 :num_likes 1
+                 :num_photos 2
+                 :num_groups 3}))
 
 
 ## Value Marshalling and Unmarshalling
