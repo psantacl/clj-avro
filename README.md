@@ -28,6 +28,21 @@ Basic wrapper for avro functionality.  Currently, only supports flat/linear sche
                  :num_groups 3}))
 
 
+    (def *avro-schema-with-map*
+         (avro/defschema
+           {:namespace "thank-you-tours"
+                :name "APayloadCarryingThing"
+                :type "record"
+                :fields [{:name "command" :type "string"},
+                         {:name "payload" :type {:type "map" :values "string"}}]}))
+    (avro/thaw
+     *avro-schema-with-map*
+     (avro/freeze
+       *avro-schema-with-map*
+       {:command "did-you-get-that-thing-i-sent-you"
+        :payload {"key" "value"}}))
+
+
 ## Value Marshalling and Unmarshalling
 
 The library contains multimethods to help assist with value

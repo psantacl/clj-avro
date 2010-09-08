@@ -3,11 +3,15 @@
            [org.apache.avro.util Utf8]
            [org.apache.avro.io JsonEncoder JsonDecoder]
            [org.apache.avro.generic GenericData GenericData$Record GenericDatumWriter GenericDatumReader]
-           [java.io File FileOutputStream FileInputStream ByteArrayOutputStream ByteArrayInputStream])
+           [java.io File FileOutputStream FileInputStream ByteArrayOutputStream ByteArrayInputStream]
+           [java.util Map])
   (:require [clojure.contrib.json.write :as json]))
 
+(defn schema->json [m]
+  (json/json-str m))
+
 (defn defschema [m]
-  (Schema/parse (json/json-str m)))
+  (Schema/parse (schema->json m)))
 
 (defmulti value-marshal class)
 
@@ -17,10 +21,24 @@
 (defmethod value-marshal String [val]
   (Utf8. val))
 
+(defmethod value-marshal Map [val]
+  (reduce (fn [m k]
+            (assoc m (value-marshal k) (value-marshal (get val k))))
+          {}
+          (keys val)))
+
 (defmulti value-unmarshal class)
 
 (defmethod value-unmarshal Utf8 [val]
   (.toString val))
+
+(defmethod value-unmarshal Map [val]
+  (reduce (fn [m k]
+            (assoc m
+              (value-unmarshal k)
+              (value-unmarshal (get val k))))
+          {}
+          (keys val)))
 
 (defmethod value-unmarshal :default [val]
   val)
