@@ -1,4 +1,4 @@
-(defproject org.clojars.relaynetwork/clj-avro "1.0.1"
+(defproject org.clojars.relaynetwork/clj-avro "1.0.2"
   :description "Avro Wrapper for Clojure"
   :dev-dependencies [[swank-clojure "1.2.1"]]
   :dependencies [[org.clojure/clojure "1.1.0"]

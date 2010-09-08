@@ -21,6 +21,10 @@
 (defmethod value-marshal String [val]
   (Utf8. val))
 
+(defmethod value-marshal clojure.lang.Keyword [val]
+  (Utf8. (name val)))
+
+
 (defmethod value-marshal Map [val]
   (reduce (fn [m k]
             (assoc m (value-marshal k) (value-marshal (get val k))))
@@ -43,6 +47,14 @@
 (defmethod value-unmarshal :default [val]
   val)
 
+(defmulti key-marshal class)
+
+(defmethod key-marshal clojure.lang.Keyword [k]
+  (name k))
+
+(defmethod key-marshal :default [k]
+  (str k))
+
 ;; TODO: we're only supporting linear record for now, in the future
 ;; we'll need to assume data (a map) is a tree with substructure and
 ;; map that onto the avro schema/record correctly.
@@ -52,7 +64,7 @@
         e (JsonEncoder. schema bao)
         generic-record (GenericData$Record. schema)]
     (doseq [k (keys data)]
-      (.put generic-record (name k) (value-marshal (k data))))
+      (.put generic-record (key-marshal k) (value-marshal (k data))))
     (.write w generic-record e)
     (.flush e)
     (.toString bao)))
@@ -153,11 +165,11 @@
     (.toString bao)
     )
 
-  
+
 
   (let [datum-reader (GenericDatumReader. *some-schema*)
         decoder      (JsonDecoder. *some-schema* (FileInputStream. (File. "test_data.avro")))]
     (str (.get (.read datum-reader nil decoder) "name")))
-  
+
 
   )
