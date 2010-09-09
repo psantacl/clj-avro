@@ -39,7 +39,7 @@
 (defmethod value-unmarshal Map [val]
   (reduce (fn [m k]
             (assoc m
-              (value-unmarshal k)
+              (keyword (value-unmarshal k))
               (value-unmarshal (get val k))))
           {}
           (keys val)))
@@ -58,13 +58,13 @@
 ;; TODO: we're only supporting linear record for now, in the future
 ;; we'll need to assume data (a map) is a tree with substructure and
 ;; map that onto the avro schema/record correctly.
-(defn freeze [schema data]
+(defn freeze [schema #^Map data]
   (let [bao (ByteArrayOutputStream.)
         w (GenericDatumWriter. schema)
         e (JsonEncoder. schema bao)
         generic-record (GenericData$Record. schema)]
     (doseq [k (keys data)]
-      (.put generic-record (key-marshal k) (value-marshal (k data))))
+      (.put generic-record (key-marshal k) (value-marshal (get data k))))
     (.write w generic-record e)
     (.flush e)
     (.toString bao)))
