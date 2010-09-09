@@ -43,6 +43,15 @@ Basic wrapper for avro functionality.  Currently, only supports flat/linear sche
         :payload {"key" "value"}}))
 
 
+    ;; Example using a nested "map of maps"
+    (def *avro-schema-with-map*
+       (avro/defschema
+         {:namespace "avro.examples"
+              :name "MapOfMaps"
+              :type "record"
+              :fields [{:name "command" :type "string"}
+                       {:name "payload" :type {:type "map" :values ["string" "null" "int" {:type "map" :values "string"}]}}]}))
+
 ## Value Marshalling and Unmarshalling
 
 The library contains multimethods to help assist with value
