@@ -2,6 +2,8 @@
   (:use [clj-avro.core] :reload)
   (:use [clojure.test]))
 
+;; (run-all-tests)
+
 (def *test-simple-schema*
      (defschema
        {:namespace "test.avro"

@@ -1,11 +1,11 @@
 (ns clj-avro.core
   (:import [org.apache.avro Schema Protocol]
            [org.apache.avro.util Utf8]
-           [org.apache.avro.io JsonEncoder JsonDecoder]
            [org.apache.avro.generic GenericData GenericData$Record GenericDatumWriter GenericDatumReader]
            [java.io File FileOutputStream FileInputStream ByteArrayOutputStream ByteArrayInputStream]
            [java.util Map])
   (:require [clojure.contrib.json :as json]))
+
 
 (defn schema->json [m]
   (json/json-str m))
@@ -64,7 +64,7 @@
 (defn freeze [schema #^Map data]
   (let [bao (ByteArrayOutputStream.)
         w (GenericDatumWriter. schema)
-        e (JsonEncoder. schema bao)
+        e (.jsonEncoder (org.apache.avro.io.EncoderFactory/get) schema bao)
         generic-record (GenericData$Record. schema)]
     (doseq [k (keys data)]
       (.put generic-record (key-marshal k) (value-marshal (get data k))))
@@ -97,7 +97,7 @@
 ;; map that onto the avro schema/record correctly.
 (defn raw-thaw [schema data]
   (let [datum-reader (GenericDatumReader. schema)
-        decoder      (JsonDecoder. schema (ByteArrayInputStream. (.getBytes data)))]
+        decoder      (.jsonDecoder (org.apache.avro.io.DecoderFactory/get) schema (ByteArrayInputStream. (.getBytes data)))]
     (.read datum-reader nil decoder)))
 
 (defn thaw [schema data]
