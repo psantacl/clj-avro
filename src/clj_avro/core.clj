@@ -1,5 +1,5 @@
 (ns clj-avro.core
-  (:import [org.apache.avro Schema]
+  (:import [org.apache.avro Schema Protocol]
            [org.apache.avro.util Utf8]
            [org.apache.avro.io JsonEncoder JsonDecoder]
            [org.apache.avro.generic GenericData GenericData$Record GenericDatumWriter GenericDatumReader]
@@ -12,6 +12,9 @@
 
 (defn defschema [m]
   (Schema/parse (schema->json m)))
+
+(defn parse-protocol [js]
+  (Protocol/parse js))
 
 (defmulti value-marshal class)
 
