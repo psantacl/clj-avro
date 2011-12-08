@@ -56,5 +56,5 @@
   (avro-encode! type thing)
   (json/json-str thing))
 
-(defn json-encode! [type thing]
+(defn json-encode [type thing]
   (json/json-str thing))
