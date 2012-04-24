@@ -1,6 +1,8 @@
 (defproject org.clojars.relaynetwork/clj-avro "1.0.8-SNAPSHOT"
   :description "Avro Wrapper for Clojure"
   :dev-dependencies [[swank-clojure "1.4.0-SNAPSHOT"]]
+  :plugins [[lein-release "1.0.0-SNAPSHOT"]]
+  :lein-release {:deploy-via :clojars}
   :local-repo-classpath true
   :dependencies [[org.clojure/clojure "1.2.0"]
                  ;; [org.apache.avro/avro "1.5.4"]
