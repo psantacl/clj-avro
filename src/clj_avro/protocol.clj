@@ -1,10 +1,9 @@
 (ns clj-avro.protocol
   (:require
    [clj-avro.core :as avro]
-   [clojure.contrib.json :as json])
+   [clojure.data.json :as json])
   (:use
    [clj-etl-utils.lang-utils :only [raise resource-as-string]]))
-
 
 (def *protocol-registry* (atom {}))
 

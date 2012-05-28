@@ -4,7 +4,7 @@
            [org.apache.avro.generic GenericData GenericData$Record GenericDatumWriter GenericDatumReader]
            [java.io File FileOutputStream FileInputStream ByteArrayOutputStream ByteArrayInputStream]
            [java.util Map])
-  (:require [clojure.contrib.json :as json]))
+  (:require [clojure.data.json :as json]))
 
 
 (defn schema->json [m]
