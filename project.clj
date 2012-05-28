@@ -8,4 +8,5 @@
                  ;; [org.apache.avro/avro "1.5.4"]
                  [org.apache.avro/avro "1.6.1"]
                  [org.clojure/data.json "0.1.3"]
-                 [org.clojars.kyleburton/clj-etl-utils        "1.0.49-SNAPSHOT"]])
+                 [org.clojars.kyleburton/clj-etl-utils "1.3.1-SNAPSHOT"]
+])
